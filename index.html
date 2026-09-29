@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise Estrutural e Temática de Redação - Instituto AOCP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,300&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .serif {
+            font-family: 'Merriweather', serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Chosen Palette: Warm Slate & Navy Harmony -->
+    <!-- Application Structure Plan: O aplicativo foi estruturado em um painel interativo unificado para facilitar o estudo e a navegação estratégica dos candidatos. Ele é dividido em 5 seções principais: 1. Visão Geral e Matriz de Correção (apresentando os critérios de nota e o simulador de eliminação); 2. Arquitetura do Texto (ferramenta visual e iterativa da distribuição das 15 a 30 linhas); 3. Explorador Interativo dos 10 Temas Recorrentes (com filtros por categoria, busca textual e cards expansíveis contendo teses, legislações e tópicos frasais); 4. Painel Estatístico com Gráficos Chart.js (focado na interpretação dos dados do Atlas da Violência e Saúde Mental da Tropa); 5. Checklist de Verificação Rápida antes da Prova. Essa estrutura prioritária de UX maximiza a retenção do conteúdo sem reproduzir a leitura passiva de um relatório estático. -->
+    <!-- Visualization & Content Choices: 1. Critérios de Avaliação -> Cards interativos com toggles para destacar o impacto no texto; 2. Distribuição de Linhas -> Barra de progresso dinâmica com seletor de parágrafos; 3. Os 10 Eixos Temáticos -> Painel com filtros categóricos (Direitos, Tecnologia, Saúde, etc.) e busca em tempo real com modal/drawer de detalhes; 4. Dados de Violência Racial e Saúde Mental -> Gráficos de barras e rosca dinâmica via Chart.js sem uso de SVG/Mermaid. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center gap-3">
+                <span class="bg-amber-500 text-slate-950 text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">AOCP Policial</span>
+                <h1 class="text-lg sm:text-xl font-bold tracking-tight">Guia Estrutural e Temático de Redação</h1>
+            </div>
+            <nav class="flex flex-wrap justify-center gap-1 sm:gap-2 text-xs sm:text-sm font-medium">
+                <a href="#matriz" class="px-3 py-1.5 rounded-lg hover:bg-slate-800 transition-colors">Matriz de Correção</a>
+                <a href="#arquitetura" class="px-3 py-1.5 rounded-lg hover:bg-slate-800 transition-colors">Estrutura (15-30L)</a>
+                <a href="#temas" class="px-3 py-1.5 rounded-lg hover:bg-slate-800 transition-colors text-amber-400 font-semibold">10 Temas Chave</a>
+                <a href="#dados" class="px-3 py-1.5 rounded-lg hover:bg-slate-800 transition-colors">Dados & Gráficos</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+        <section class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-2xl p-6 sm:p-10 shadow-xl relative overflow-hidden">
+            <div class="max-w-3xl relative z-10">
+                <span class="text-amber-400 text-xs font-bold tracking-widest uppercase mb-2 block">Análise de Desempenho Discursivo</span>
+                <h2 class="text-2xl sm:text-4xl font-extrabold mb-4 leading-tight">Dominando a Prova Discursiva do Instituto AOCP</h2>
+                <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
+                    A banca Instituto AOCP exige uma abordagem estratégica que conecta a teoria jurídica, os direitos fundamentais e a sociologia aplicada à realidade operacional das corporações policiais. O texto dissertativo-argumentativo deve possuir entre 15 e 30 linhas com posicionamento crítico fundamentado.
+                </p>
+                <div class="flex flex-wrap gap-4 text-xs sm:text-sm">
+                    <div class="bg-slate-800/80 border border-slate-700/80 px-4 py-2.5 rounded-xl flex items-center gap-2">
+                        <span class="text-amber-400 font-bold">📏 Limite:</span> 15 a 30 linhas
+                    </div>
+                    <div class="bg-slate-800/80 border border-slate-700/80 px-4 py-2.5 rounded-xl flex items-center gap-2">
+                        <span class="text-amber-400 font-bold">✍️ Tipologia:</span> Dissertativo-Argumentativo
+                    </div>
+                    <div class="bg-slate-800/80 border border-slate-700/80 px-4 py-2.5 rounded-xl flex items-center gap-2">
+                        <span class="text-amber-400 font-bold">🎯 Foco:</span> Direitos Humanos & Atuação Estatal
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="matriz" class="space-y-6">
+            <div class="border-l-4 border-indigo-600 pl-4">
+                <h2 class="text-2xl font-bold text-slate-900">1. Matriz de Avaliação e Fatores de Eliminação</h2>
+                <p class="text-slate-600 text-sm mt-1">
+                    Esta seção detalha os quatro pilares analíticos utilizados pelos corretores da AOCP para atribuir a nota final, além de listar os critérios que provocam a anulação imediata da redação. Utilize este painel para direcionar sua autoavaliação.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full">Critério 1</span>
+                        <span class="text-xl">🎯</span>
+                    </div>
+                    <h3 class="font-bold text-slate-900 mb-2">Tema & Repertório</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Avalia a compreensão integral da proposta sem tangenciamento, o grau de informatividade, o uso produtivo do repertório sociocultural e a consistência dos argumentos.
+                    </p>
+                </div>
+
+                <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full">Critério 2</span>
+                        <span class="text-xl">🔗</span>
+                    </div>
+                    <h3 class="font-bold text-slate-900 mb-2">Coesão & Coerência</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Analisa a progressão lógica, ausência de contradições e articulação correta com conectivos inter e intraparágrafos, garantindo fluidez argumentativa.
+                    </p>
+                </div>
+
+                <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full">Critério 3</span>
+                        <span class="text-xl">🏗️</span>
+                    </div>
+                    <h3 class="font-bold text-slate-900 mb-2">Estrutura Textual</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Verifica a divisão cristalina e proporcional em Introdução, Desenvolvimento e Conclusão, penalizando abordagens meramente expositivas ou narrativas.
+                    </p>
+                </div>
+
+                <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full">Critério 4</span>
+                        <span class="text-xl">📝</span>
+                    </div>
+                    <h3 class="font-bold text-slate-900 mb-2">Modalidade Gramatical</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Exige rigor no domínio do padrão culto da Língua Portuguesa: concordância, regência, crase, pontuação, ortografia, colocação pronominal e legibilidade.
+                    </p>
+                </div>
+            </div>
+
+            <div class="bg-rose-50 border border-rose-200 rounded-xl p-5 sm:p-6">
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="text-rose-600 font-bold text-lg">⚠️ Hipóteses de Nota Zero (Eliminação Sumária)</span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs text-rose-950 font-medium">
+                    <div class="flex items-start gap-2 bg-white/80 p-2.5 rounded-lg border border-rose-100">
+                        <span class="text-rose-500 font-bold">🚫</span>
+                        <span>Fuga total ao tema ou não atendimento à tipologia dissertativa.</span>
+                    </div>
+                    <div class="flex items-start gap-2 bg-white/80 p-2.5 rounded-lg border border-rose-100">
+                        <span class="text-rose-500 font-bold">📐</span>
+                        <span>Texto com menos de 15 linhas ou que ultrapasse 30 linhas.</span>
+                    </div>
+                    <div class="flex items-start gap-2 bg-white/80 p-2.5 rounded-lg border border-rose-100">
+                        <span class="text-rose-500 font-bold">🕊️️</span>
+                        <span>Violação explícita aos Direitos Humanos ou discurso de ódio.</span>
+                    </div>
+                    <div class="flex items-start gap-2 bg-white/80 p-2.5 rounded-lg border border-rose-100">
+                        <span class="text-rose-500 font-bold">✏️</span>
+                        <span>Redação escrita a lápis ou em cor de caneta não permitida.</span>
+                    </div>
+                    <div class="flex items-start gap-2 bg-white/80 p-2.5 rounded-lg border border-rose-100">
+                        <span class="text-rose-500 font-bold">📄</span>
+                        <span>Cópia integral ou paráfrase pobre dos textos motivadores.</span>
+                    </div>
+                    <div class="flex items-start gap-2 bg-white/80 p-2.5 rounded-lg border border-rose-100">
+                        <span class="text-rose-500 font-bold">🆔</span>
+                        <span>Marcas ou assinaturas fora do local apropriado na folha oficial.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="arquitetura" class="space-y-6">
+            <div class="border-l-4 border-indigo-600 pl-4">
+                <h2 class="text-2xl font-bold text-slate-900">2. Arquitetura Macroestrutural (Planejador de 15 a 30 Linhas)</h2>
+                <p class="text-slate-600 text-sm mt-1">
+                    Esta seção apresenta o modelo ideal de divisão do texto em 4 parágrafos simétricos. Clique nas etapas do planejador para entender os elementos essenciais de cada bloco argumentativo.
+                </p>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <div class="lg:col-span-5 space-y-3">
+                        <h3 class="font-bold text-slate-900 text-sm uppercase tracking-wider">Simulador de Proporção Textual</h3>
+                        <p class="text-xs text-slate-500">Distribuição sugerida para atingir a meta ideal de ~26 a 28 linhas:</p>
+                        
+                        <div class="space-y-3">
+                            <button onclick="selectParagraph('intro')" id="btn-intro" class="w-full text-left p-3.5 rounded-xl border-2 border-indigo-600 bg-indigo-50/50 transition-all flex justify-between items-center">
+                                <div>
+                                    <div class="font-bold text-slate-900 text-sm">Parágrafo 1: Introdução</div>
+                                    <div class="text-xs text-slate-500">Contextualização + Tese + Encaminhamento</div>
+                                </div>
+                                <span class="bg-indigo-600 text-white text-xs font-bold px-2 py-1 rounded-md">4 - 6 linhas</span>
+                            </button>
+
+                            <button onclick="selectParagraph('dev1')" id="btn-dev1" class="w-full text-left p-3.5 rounded-xl border border-slate-200 hover:border-indigo-300 transition-all flex justify-between items-center">
+                                <div>
+                                    <div class="font-bold text-slate-900 text-sm">Parágrafo 2: Desenvolvimento 1</div>
+                                    <div class="text-xs text-slate-500">Tópico Frasal + Repertório + Fechamento</div>
+                                </div>
+                                <span class="bg-slate-100 text-slate-700 text-xs font-bold px-2 py-1 rounded-md">7 - 9 linhas</span>
+                            </button>
+
+                            <button onclick="selectParagraph('dev2')" id="btn-dev2" class="w-full text-left p-3.5 rounded-xl border border-slate-200 hover:border-indigo-300 transition-all flex justify-between items-center">
+                                <div>
+                                    <div class="font-bold text-slate-900 text-sm">Parágrafo 3: Desenvolvimento 2</div>
+                                    <div class="text-xs text-slate-500">Segundo Argumento + Dados/Legislação + Análise</div>
+                                </div>
+                                <span class="bg-slate-100 text-slate-700 text-xs font-bold px-2 py-1 rounded-md">7 - 9 linhas</span>
+                            </button>
+
+                            <button onclick="selectParagraph('concl')" id="btn-concl" class="w-full text-left p-3.5 rounded-xl border border-slate-200 hover:border-indigo-300 transition-all flex justify-between items-center">
+                                <div>
+                                    <div class="font-bold text-slate-900 text-sm">Parágrafo 4: Conclusão</div>
+                                    <div class="text-xs text-slate-500">Conectivo Conclusivo + Retomada + Proposta/Síntese</div>
+                                </div>
+                                <span class="bg-slate-100 text-slate-700 text-xs font-bold px-2 py-1 rounded-md">4 - 6 linhas</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7 bg-slate-50 border border-slate-200 rounded-xl p-5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
+                                <h4 id="para-title" class="font-bold text-indigo-900 text-base">Detalhamento: Parágrafo 1 - Introdução</h4>
+                                <span id="para-badge" class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2.5 py-1 rounded-full">4 a 6 Linhas</span>
+                            </div>
+
+                            <div id="para-content" class="space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed">
+                                <p>
+                                    <strong>Objetivo:</strong> Apresentar o problema ao leitor e marcar a tese central que será sustentada ao longo do texto.
+                                </p>
+                                <div class="bg-white p-3.5 rounded-lg border border-slate-200 space-y-2">
+                                    <div class="font-semibold text-slate-900 text-xs uppercase text-indigo-600">Componentes Obrigatórios:</div>
+                                    <ul class="list-disc pl-4 space-y-1 text-xs">
+                                        <td><strong>Contextualização:</strong> Alusão histórica, norma da CF/88 ou reflexão sociológica.</td>
+                                        <td><strong>Tese Central:</strong> Posicionamento cristalino e crítico do candidato sobre a temática.</td>
+                                        <td><strong>Encaminhamento Argumentativo:</strong> Apresentação sumária das duas causas (A e B) que serão desdobradas nos desenvolvimentos.</td>
+                                    </ul>
+                                </div>
+                                <div class="bg-amber-50 border border-amber-200 p-3 rounded-lg text-xs text-amber-900">
+                                    <strong>💡 Dica do Instituto AOCP:</strong> Evite rodeios ou introduções genéricas. A banca valoriza a articulação direta com a realidade da segurança pública e dos direitos garantidos.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 pt-3 border-t border-slate-200 text-xs text-slate-500 flex justify-between items-center">
+                            <span>Soma Recomendada: <strong>26 Linhas</strong></span>
+                            <span>Mínimo Absoluto: 15L | Máximo: 30L</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="temas" class="space-y-6">
+            <div class="border-l-4 border-indigo-600 pl-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">3. Os 10 Eixos Temáticos de Alta Recorrência</h2>
+                    <p class="text-slate-600 text-sm mt-1">
+                        Explore os 10 temas mais prováveis para provas do Instituto AOCP na área policial. Filtre por área ou busque por termos jurídicos para examinar teses, leis e intervenções.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-3 items-center justify-between bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <div class="flex flex-wrap gap-1.5 w-full md:w-auto text-xs">
+                    <button onclick="filterThemes('all')" class="theme-filter-btn px-3 py-1.5 rounded-lg bg-indigo-600 text-white font-medium">Todos (10)</button>
+                    <button onclick="filterThemes('direitos')" class="theme-filter-btn px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 font-medium">Direitos & Sociedade</button>
+                    <button onclick="filterThemes('gestao')" class="theme-filter-btn px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 font-medium">Gestão & Operacional</button>
+                    <button onclick="filterThemes('tecnologia')" class="theme-filter-btn px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 font-medium">Tecnologia & Meio Ambiente</button>
+                </div>
+                <div class="w-full md:w-64">
+                    <input type="text" id="theme-search" onkeyup="searchThemes()" placeholder="Buscar por palavra-chave (ex: SUSP, STF)..." class="w-full text-xs px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+            </div>
+
+            <div id="themes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            </div>
+        </section>
+
+        <section id="dados" class="space-y-6">
+            <div class="border-l-4 border-indigo-600 pl-4">
+                <h2 class="text-2xl font-bold text-slate-900">4. Painel Estatístico & Repertórios Factuais</h2>
+                <p class="text-slate-600 text-sm mt-1">
+                    A banca AOCP exige a fundamentação do texto com dados concretos. Abaixo estão compilados os principais indicadores extraídos do Atlas da Violência e dos relatórios de Saúde Mental Policial citados nas provas.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-3">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                        <h3 class="font-bold text-slate-900 text-sm">Disparidade Racial na Incidência de Violência Lethal</h3>
+                        <span class="text-xs bg-rose-100 text-rose-800 font-medium px-2 py-0.5 rounded">Risco Relativo</span>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Dados do Atlas da Violência evidenciam a seletividade e a vulnerabilidade desproporcional da população negra em comparação aos não negros no Brasil.
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="racialChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-3">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                        <h3 class="font-bold text-slate-900 text-sm">Adoecimento Mental e Afastamento Ocupacional</h3>
+                        <span class="text-xs bg-amber-100 text-amber-800 font-medium px-2 py-0.5 rounded">Saúde Policial</span>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Proporção de causas de sofrimento psíquico e casos formais de afastamento na tropa (CID-10: Depressão, TEPT e Ansiedade).
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="healthChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-slate-900 text-slate-100 rounded-2xl p-6 sm:p-8 space-y-4">
+            <h2 class="text-xl font-bold text-amber-400">⚡ Checklist do Candidato de Alta Performance</h2>
+            <p class="text-xs sm:text-sm text-slate-300">
+                Antes de passar sua redação a limpo no dia da prova do Instituto AOCP, verifique mentalmente estes 5 quesitos cruciais:
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+                <div class="bg-slate-800/90 p-3.5 rounded-xl border border-slate-700">
+                    <span class="text-amber-400 font-bold block mb-1">1. Tese Inequívoca</span>
+                    Minha introdução possui um posicionamento claro sobre o problema e não apenas resumos?
+                </div>
+                <div class="bg-slate-800/90 p-3.5 rounded-xl border border-slate-700">
+                    <span class="text-amber-400 font-bold block mb-1">2. Repertório Legítimo</span>
+                    Citei CF/88, leis específicas (ex: SUSP, LEP, Maria da Penha) ou sociologia sem invenções?
+                </div>
+                <div class="bg-slate-800/90 p-3.5 rounded-xl border border-slate-700">
+                    <span class="text-amber-400 font-bold block mb-1">3. Conectivos Interparágrafos</span>
+                    Iniciei os desenvolvimentos e a conclusão com operadores argumentativos adequados?
+                </div>
+                <div class="bg-slate-800/90 p-3.5 rounded-xl border border-slate-700">
+                    <span class="text-amber-400 font-bold block mb-1">4. Proposta Factível</span>
+                    Minha solução envolve o fortalecimento das instituições de segurança e respeito aos direitos civis?
+                </div>
+                <div class="bg-slate-800/90 p-3.5 rounded-xl border border-slate-700">
+                    <span class="text-amber-400 font-bold block mb-1">5. Contagem Rigorosa</span>
+                    O texto final possui estritamente entre 15 e 30 linhas na folha definitiva?
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="modal-theme" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white border border-slate-200 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="bg-slate-900 text-white p-5 flex justify-between items-center">
+                <div>
+                    <span id="modal-category" class="text-xs text-amber-400 font-bold uppercase tracking-wider block"></span>
+                    <h3 id="modal-title" class="text-lg font-bold"></h3>
+                </div>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white text-xl font-bold p-1">✕</button>
+            </div>
+            
+            <div id="modal-body" class="p-6 overflow-y-auto space-y-4 text-xs sm:text-sm text-slate-700 custom-scrollbar flex-1">
+            </div>
+
+            <div class="bg-slate-50 border-t border-slate-200 p-4 flex justify-end">
+                <button onclick="closeModal()" class="px-4 py-2 bg-indigo-600 text-white rounded-lg text-xs font-semibold hover:bg-indigo-700">Fechar Detalhes</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-slate-950 text-slate-400 border-t border-slate-800 py-6 text-center text-xs">
+        <div class="max-w-7xl mx-auto px-4 space-y-2">
+            <p>Guia de Preparação Discursiva para Carreiras Policiais — Baseado nas Diretrizes do Instituto AOCP.</p>
+            <p class="text-slate-600">Material informativo estruturado para aperfeiçoamento de técnicas de escrita argumentativa.</p>
+        </div>
+    </footer>
+
+    <script>
+        const themesData = [
+            {
+                id: 1,
+                title: "Segurança Pública como Dever do Estado e Responsabilidade Compartilhada",
+                category: "gestao",
+                catLabel: "Gestão & Operacional",
+                summary: "A hermenêutica do artigo 144 da CF/88 e a consolidação do Sistema Único de Segurança Pública (SUSP).",
+                legislation: "Art. 144 da CF/88; Lei nº 13.675/2018 (Institui o SUSP e a PNSPDS).",
+                thesis: "A superação do modelo estritamente repressivo exige a atuação conjunta entre União, Estados e Municípios, articulando prevenção primária e inteligência corporativa.",
+                stats: "Prevenção primária diminui a demanda da repressão secundária e reduz gastos públicos com o sistema carcerário.",
+                solution: "Fortalecimento do Sinaped, integração de bancos de dados das polícias e criação de conselhos comunitários de segurança pública permanentes.",
+                topicSentence: "Inauguralmente, cumpre salientar que a efetividade da segurança pública transcende o caráter ostensivo e repressivo, demandando uma gestão integrada e sistêmica entre os entes federativos."
+            },
+            {
+                id: 2,
+                title: "Saúde Mental no Ambiente de Trabalho Policial e Cultura Organizacional",
+                category: "gestao",
+                catLabel: "Gestão & Operacional",
+                summary: "Adoecimento psíquico na tropa, estresse operacional e o 'estigma do herói' na atividade policial.",
+                legislation: "Programa Pró-Vida (Lei nº 13.675/2018 - SUSP); Diretrizes de Saúde Ocupacional.",
+                thesis: "A desconstrução da cultura de invulnerabilidade profissional é premissa indispensável para conter a epidemia silenciosa de suicídios e afastamentos na tropa.",
+                stats: "Em 2022, registraram-se 85 suicídios de PMs da ativa e 13 de PCs, com mais de 70 mil afastamentos formais por transtornos mentais (CID-10).",
+                solution: "Criação de núcleos permanentes de assistência psicológica sigilosa e campanhas de prevenção continuada nas academias de polícia.",
+                topicSentence: "Sob essa ótica, é imperioso desconstruir a cultura organizacional do 'herói inabalável', a qual inibe a busca por auxílio psicológico e culmina no adoecimento da tropa."
+            },
+            {
+                id: 3,
+                title: "A Crise no Sistema Carcerário e o Estado de Coisas Inconstitucional",
+                category: "direitos",
+                catLabel: "Direitos & Sociedade",
+                summary: "Superlotação prisional, violação de direitos fundamentais e o avanço das facções nos presídios.",
+                legislation: "Lei de Execução Penal (LEP - Lei 7.210/84); ADPF 347 do STF; Plano Pena Justa.",
+                thesis: "A falência do modelo punitivista exige a racionalização das portas de entrada do sistema carcerário e o cumprimento efetivo da função ressocializadora da pena.",
+                stats: "Brasil possui a 3ª maior população prisional do planeta (~850 mil apenados), enfrentando déficit massivo de vagas e hegemonia de facções.",
+                solution: "Expansão das audiências de custódia, aplicação rigorosa de penas alternativas e fomento ao trabalho e estudo profissionalizante nos pavilhões.",
+                topicSentence: "Ademais, constata-se que a crise estrutural do sistema carcerário brasileiro perpetua um 'Estado de Coisas Inconstitucional', convertendo presídios em faculdades do crime."
+            },
+            {
+                id: 4,
+                title: "Inovação Tecnológica na Atividade Policial e Expansão da Cibercriminalidade",
+                category: "tecnologia",
+                catLabel: "Tecnologia & Meio Ambiente",
+                summary: "O duplo impacto da tecnologia: uso de câmeras corporais e IA versus o avanço dos crimes digitais.",
+                legislation: "Lei Geral de Proteção de Dados (LGPD - Lei 13.709/18); Marco Civil da Internet (Lei 12.965/14).",
+                thesis: "O emprego de ferramentas tecnológicas de vanguarda resguarda a atuação policial legítima ao passo que combate fraudes digitais sem violar garantias individuais.",
+                stats: "Adoção de câmeras corporais (bodycams) reduz a letalidade policial e protege agentes contra falsas acusações administrativas.",
+                solution: "Capacitação contínua de investigadores em perícia cibernética forense e aquisição regulada de softwares de inteligência com compliance.",
+                topicSentence: "É de fundamental importância pontuar que o avanço tecnológico atua como um vetor duplo: potencializa as ações de inteligência e exige respostas céleres contra a cibercriminalidade."
+            },
+            {
+                id: 5,
+                title: "Racismo Estrutural, Seletividade Penal e Letalidade Policial",
+                category: "direitos",
+                catLabel: "Direitos & Sociedade",
+                summary: "Disparidade racial nas estatísticas de mortes violentas e a necessidade de protocolos operacionais padronizados.",
+                legislation: "Art. 5º, XLII da CF/88; Tratados Internacionais de Direitos Humanos; Princípios Básicos sobre o Uso da Força.",
+                thesis: "A superação do racismo estrutural nas abordagens de segurança é requisito basilar para assegurar a legitimidade das forças policiais perante a sociedade civil.",
+                stats: "Jovens negros possuem risco relativo 2,7 vezes maior de vitimização por homicídio no Brasil em comparação à população não negra.",
+                solution: "Letramento racial obrigatório na formação policial, uso de câmeras operacionais e fiscalização severa por órgãos de controle interno e externo.",
+                topicSentence: "Nessa perspectiva, torna-se evidente que a seletividade penal e o racismo estrutural ainda influenciam negativamente os indicadores de letalidade nas periferias."
+            },
+            {
+                id: 6,
+                title: "Violência de Gênero, Feminicídio e a Dinâmica do Espaço Doméstico",
+                category: "direitos",
+                catLabel: "Direitos & Sociedade",
+                summary: "A persistência da violência doméstica contra a mulher e a eficácia das garantias protetivas.",
+                legislation: "Lei Maria da Penha (Lei nº 11.340/06); Lei do Feminicídio (Lei nº 13.104/15).",
+                thesis: "A repressão penal ao feminicídio deve ser acompanhada por uma rede de acolhimento intersetorial e educação preventiva contra a cultura patriarcal.",
+                stats: "A maioria esmagadora dos assassinatos de mulheres ocorre no ambiente doméstico cometida por parceiros ou ex-parceiros íntimos.",
+                solution: "Expansão das DEAMs com atendimento 24h, capacitação técnica contra a revitimização e patrulhas especializadas da Maria da Penha.",
+                topicSentence: "Outrossim, cabe ressaltar que a violência de gênero no Brasil raíza-se em um machismo estrutural que exige respostas protetivas e educativas imediatas."
+            },
+            {
+                id: 7,
+                title: "Abuso de Autoridade e a Preservação das Garantias Constitucionais",
+                category: "gestao",
+                catLabel: "Gestão & Operacional",
+                summary: "Os limites legais do poder de polícia e o combate ao arbítrio estatal na persecução penal.",
+                legislation: "Nova Lei de Abuso de Autoridade (Lei nº 13.869/2019); Princípio da Legalidade.",
+                thesis: "A estrita observância das garantias constitucionais não entrava a eficiência policial, mas consolida a civilidade e evita a nulidade de provas processuais.",
+                stats: "A invasão ilícita de domicílio e o interrogatório noturno sem flagrante anulam processos inteiros nos tribunais superiores (STJ/STF).",
+                solution: "Padronização de procedimentos operacionais (POPs) pautados na legalidade e fortalecimento das corregedorias autônomas.",
+                topicSentence: "Consequentemente, cumpre salientar que a Lei de Abuso de Autoridade atua como um filtro profilático, garantindo que o combate ao crime respeite o devido processo legal."
+            },
+            {
+                id: 8,
+                title: "Sociedade do Consumo, Redes Sociais e a Epidemia de Transtornos Psíquicos",
+                category: "direitos",
+                catLabel: "Direitos & Sociedade",
+                summary: "A ditadura da felicidade virtual, o discurso de ódio e os limites éticos da liberdade de expressão nas redes.",
+                legislation: "Art. 5º, IV e X da CF/88; Jurisprudência do STF sobre Discurso de Ódio (Hate Speech).",
+                thesis: "A liberdade de expressão não ostenta caráter absoluto, devendo responder penalmente por incitações à violência, anonimato delituoso e difamação.",
+                stats: "Zygmunt Bauman (Modernidade Líquida) e o fenômeno das câmaras de eco alimentam a polarização radical e transtornos de ansiedade social.",
+                solution: "Educação digital nas escolas, responsabilização de plataformas por conteúdos criminosos e divisões policiais especializadas em crimes de ódio.",
+                topicSentence: "Em paralelo, observa-se que a busca por validação nas redes sociais fomenta uma sociedade de espetáculo que deságua em intolerância e discursos extremistas."
+            },
+            {
+                id: 9,
+                title: "Degradação da Mobilidade Urbana e a Cultura da Violência no Trânsito",
+                category: "tecnologia",
+                catLabel: "Tecnologia & Meio Ambiente",
+                summary: "Macrocefalia urbana, desrespeito ao CTB e o sobrecarregamento dos leitos hospitalares de emergência.",
+                legislation: "Código de Trânsito Brasileiro (CTB - Lei nº 9.503/97); Lei Seca.",
+                thesis: "A violência viária decorre da associação entre individualismo, sensação de impunidade e falhas no transporte público, exigindo fiscalização rigorosa.",
+                stats: "Sinistros de trânsito consomem bilhões de reais anualmente do SUS e representam uma das principais causas de mortes entre jovens.",
+                solution: "Operações integradas de saturação (Blitzes da Lei Seca), modernização de sinalização viária e campanhas permanentes de educação para o trânsito.",
+                topicSentence: "Por outro lado, o crescimento desordenado das cidades brasileiras associado à cultura de impunidade no trânsito resulta em alarmantes índices de mortalidade viária."
+            },
+            {
+                id: 10,
+                title: "Defesa do Meio Ambiente, Transição Ecológica e Ameaças Climáticas",
+                category: "tecnologia",
+                catLabel: "Tecnologia & Meio Ambiente",
+                summary: "O combate aos crimes ambientais cometidos pelo crime organizado e a atuação das forças operacionais.",
+                legislation: "Art. 225 da CF/88; Lei de Crimes Ambientais (Lei nº 9.605/98).",
+                thesis: "A proteção dos biomas nacionais é imperativo transgeracional que exige a repressão firme às orcrims ambientais aliada a incentivos de economia verde.",
+                stats: "O garimpo ilegal e o desmatamento estão fortemente associados à lavagem de dinheiro e ao tráfico transnacional de armas e drogas.",
+                solution: "Aparelhamento da Polícia Ambiental e Corpos de Bombeiros, uso de satélites de monitoramento em tempo real e punições financeiras severas.",
+                topicSentence: "Por fim, é imperioso reconhecer que a degradação ambiental promovida por grupos criminosos ameaça a sustentabilidade e a segurança nacional."
+            }
+        ];
+
+        const paragraphDetails = {
+            intro: {
+                title: "Detalhamento: Parágrafo 1 - Introdução",
+                badge: "4 a 6 Linhas",
+                content: `
+                    <p><strong>Objetivo:</strong> Apresentar o problema ao leitor e marcar a tese central que será sustentada ao longo do texto.</p>
+                    <div class="bg-white p-3.5 rounded-lg border border-slate-200 space-y-2">
+                        <div class="font-semibold text-slate-900 text-xs uppercase text-indigo-600">Componentes Obrigatórios:</div>
+                        <ul class="list-disc pl-4 space-y-1 text-xs">
+                            <li><strong>Contextualização:</strong> Alusão histórica, norma da CF/88 ou reflexão sociológica (ex: Bauman, Constituição).</li>
+                            <li><strong>Tese Central:</strong> Posicionamento cristalino e crítico do candidato sobre a problemática.</li>
+                            <li><strong>Encaminhamento Argumentativo:</strong> Apresentação sumária das duas causas (Argumento A e Argumento B).</li>
+                        </ul>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200 p-3 rounded-lg text-xs text-amber-900">
+                        <strong>💡 Dica do Instituto AOCP:</strong> Evite rodeios ou introduções genéricas. A banca valoriza a articulação direta com a realidade da segurança pública e dos direitos garantidos.
+                    </div>
+                `
+            },
+            dev1: {
+                title: "Detalhamento: Parágrafo 2 - Desenvolvimento 1",
+                badge: "7 a 9 Linhas",
+                content: `
+                    <p><strong>Objetivo:</strong> Desenvolver o primeiro argumento (Causa A) apresentado no encaminhamento da introdução.</p>
+                    <div class="bg-white p-3.5 rounded-lg border border-slate-200 space-y-2">
+                        <div class="font-semibold text-slate-900 text-xs uppercase text-indigo-600">Componentes Obrigatórios:</div>
+                        <ul class="list-disc pl-4 space-y-1 text-xs">
+                            <li><strong>Conectivo Interparágrafo:</strong> Em primeiro lugar, Inauguralmente, Sob essa ótica.</li>
+                            <li><strong>Tópico Frasal:</strong> Oração declarativa curta e direta que afirma a ideia central do parágrafo.</li>
+                            <li><strong>Fundamentação sociocultural:</strong> Lei específica (ex: SUSP, LEP), dado estatístico ou conceito teórico.</li>
+                            <li><strong>Fechamento Crítico:</strong> Síntese demonstrando como a teoria corrobora a tese inicial.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-indigo-50 border border-indigo-200 p-3 rounded-lg text-xs text-indigo-900">
+                        <strong>📌 Atenção:</strong> Não apenas exponha a lei ou dado. O corretor pontua a *sua análise* sobre a consequência do fato no tecido social.
+                    </div>
+                `
+            },
+            dev2: {
+                title: "Detalhamento: Parágrafo 3 - Desenvolvimento 2",
+                badge: "7 a 9 Linhas",
+                content: `
+                    <p><strong>Objetivo:</strong> Desenvolver o segundo argumento (Causa B), aprofundando o debate sociológico ou jurídico.</p>
+                    <div class="bg-white p-3.5 rounded-lg border border-slate-200 space-y-2">
+                        <div class="font-semibold text-slate-900 text-xs uppercase text-indigo-600">Componentes Obrigatórios:</div>
+                        <ul class="list-disc pl-4 space-y-1 text-xs">
+                            <li><strong>Conectivo de Adição/Continuidade:</strong> Ademais, Outrossim, Em segundo lugar, Paralelamente.</li>
+                            <li><strong>Segundo Tópico Frasal:</strong> Apresentação direta da segunda problemática.</li>
+                            <li><strong>Repertório Complementar:</strong> Contraponto social, análise de omissão estatal ou impacto institucional.</li>
+                            <li><strong>Desfecho Parcial:</strong> Conexão lógica demonstrando o agravamento do cenário.</li>
+                        </ul>
+                    </div>
+                `
+            },
+            concl: {
+                title: "Detalhamento: Parágrafo 4 - Conclusão",
+                badge: "4 a 6 Linhas",
+                content: `
+                    <p><strong>Objetivo:</strong> Fechar o raciocínio, retomar a tese e propor soluções/reflexões finais factíveis.</p>
+                    <div class="bg-white p-3.5 rounded-lg border border-slate-200 space-y-2">
+                        <div class="font-semibold text-slate-900 text-xs uppercase text-indigo-600">Componentes Obrigatórios:</div>
+                        <ul class="list-disc pl-4 space-y-1 text-xs">
+                            <li><strong>Conectivo Conclusivo:</strong> Infere-se, portanto; Dessarte; Em suma.</li>
+                            <li><strong>Retomada da Tese:</strong> Reafirmação da necessidade de enfrentar os desafios discutidos.</li>
+                            <li><strong>Proposta de Intervenção ou Síntese:</strong> Ações factíveis focadas em capacitação, investimento em inteligência, políticas intersetoriais e transparência.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-rose-50 border border-rose-200 p-3 rounded-lg text-xs text-rose-900">
+                        <strong>⚠️ Erro Fatal:</strong> Jamais introduza argumentos novos no parágrafo de conclusão.
+                    </div>
+                `
+            }
+        };
+
+        function selectParagraph(paraKey) {
+            ['intro', 'dev1', 'dev2', 'concl'].forEach(k => {
+                const btn = document.getElementById(`btn-${k}`);
+                if (k === paraKey) {
+                    btn.className = "w-full text-left p-3.5 rounded-xl border-2 border-indigo-600 bg-indigo-50/50 transition-all flex justify-between items-center shadow-sm";
+                } else {
+                    btn.className = "w-full text-left p-3.5 rounded-xl border border-slate-200 hover:border-indigo-300 transition-all flex justify-between items-center";
+                }
+            });
+
+            const data = paragraphDetails[paraKey];
+            document.getElementById('para-title').innerText = data.title;
+            document.getElementById('para-badge').innerText = data.badge;
+            document.getElementById('para-content').innerHTML = data.content;
+        }
+
+        function renderThemes(list) {
+            const grid = document.getElementById('themes-grid');
+            grid.innerHTML = '';
+
+            if (list.length === 0) {
+                grid.innerHTML = `<div class="col-span-full bg-white p-8 rounded-xl border border-slate-200 text-center text-slate-500 text-sm">Nenhum eixo temático encontrado para os termos pesquisados.</div>`;
+                return;
+            }
+
+            list.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-4";
+                card.innerHTML = `
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-start gap-2">
+                            <span class="text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-700 px-2 py-0.5 rounded">Eixo ${item.id}</span>
+                            <span class="text-[10px] font-bold uppercase tracking-wider bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded">${item.catLabel}</span>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-sm leading-snug">${item.title}</h3>
+                        <p class="text-xs text-slate-600 line-clamp-2">${item.summary}</p>
+                    </div>
+                    
+                    <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-[11px] text-slate-500 font-medium">📜 ${item.legislation.split(';')[0]}</span>
+                        <button onclick="openModal(${item.id})" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1">
+                            Ver Análise +
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterThemes(category) {
+            document.querySelectorAll('.theme-filter-btn').forEach(btn => {
+                btn.className = "theme-filter-btn px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 font-medium";
+            });
+            event.target.className = "theme-filter-btn px-3 py-1.5 rounded-lg bg-indigo-600 text-white font-medium";
+
+            if (category === 'all') {
+                renderThemes(themesData);
+            } else {
+                const filtered = themesData.filter(t => t.category === category);
+                renderThemes(filtered);
+            }
+        }
+
+        function searchThemes() {
+            const query = document.getElementById('theme-search').value.toLowerCase();
+            const filtered = themesData.filter(t => 
+                t.title.toLowerCase().includes(query) || 
+                t.summary.toLowerCase().includes(query) ||
+                t.legislation.toLowerCase().includes(query) ||
+                t.thesis.toLowerCase().includes(query)
+            );
+            renderThemes(filtered);
+        }
+
+        function openModal(id) {
+            const item = themesData.find(t => t.id === id);
+            if (!item) return;
+
+            document.getElementById('modal-category').innerText = `Eixo Temático nº ${item.id} • ${item.catLabel}`;
+            document.getElementById('modal-title').innerText = item.title;
+
+            document.getElementById('modal-body').innerHTML = `
+                <div class="space-y-3">
+                    <div class="bg-indigo-50/70 border border-indigo-100 p-3.5 rounded-xl">
+                        <span class="font-bold text-indigo-900 text-xs uppercase block mb-1">📌 Tese Sugerida para a Prova:</span>
+                        <p class="text-xs text-indigo-950 font-medium italic">"${item.thesis}"</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl">
+                            <span class="font-bold text-slate-900 text-xs block mb-1">⚖️ Amparo Jurídico & Legal:</span>
+                            <p class="text-xs text-slate-700">${item.legislation}</p>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl">
+                            <span class="font-bold text-slate-900 text-xs block mb-1">📊 Base Factual & Estatística:</span>
+                            <p class="text-xs text-slate-700">${item.stats}</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-50/70 border border-amber-200 p-3.5 rounded-xl">
+                        <span class="font-bold text-amber-900 text-xs uppercase block mb-1">✍️ Exemplo de Tópico Frasal para Desenvolvimento:</span>
+                        <p class="text-xs text-amber-950 font-medium">"${item.topicSentence}"</p>
+                    </div>
+
+                    <div class="bg-emerald-50/70 border border-emerald-200 p-3.5 rounded-xl">
+                        <span class="font-bold text-emerald-900 text-xs uppercase block mb-1">💡 Proposta de Intervenção / Solução Institucional:</span>
+                        <p class="text-xs text-emerald-950">${item.solution}</p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('modal-theme').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modal-theme').classList.add('hidden');
+        }
+
+        function initCharts() {
+            const racialCtx = document.getElementById('racialChart').getContext('2d');
+            new Chart(racialCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Média Nacional', 'Estado de Alagoas', 'Estado do Amapá'],
+                    datasets: [{
+                        label: 'Risco Relativo de Homicídio (Negro vs Não-Negro)',
+                        data: [2.7, 23.3, 16.7],
+                        backgroundColor: ['#6366f1', '#e11d48', '#f59e0b'],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ` Risco: ${context.raw}x maior para a população negra`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Vezes mais risco (x)', font: { size: 10 } }
+                        }
+                    }
+                }
+            });
+
+            const healthCtx = document.getElementById('healthChart').getContext('2d');
+            new Chart(healthCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Transtornos de Ansiedade', 'Depressão Profunda', 'Estresse Pós-Traumático (TEPT)', 'Outras Causas CID-10'],
+                    datasets: [{
+                        data: [38, 32, 20, 10],
+                        backgroundColor: ['#f59e0b', '#ef4444', '#8b5cf6', '#cbd5e1']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { boxWidth: 12, font: { size: 10 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderThemes(themesData);
+            initCharts();
+        });
+    </script>
+</body>
+</html>
